@@ -4,7 +4,7 @@ const url = 'http://jsonplaceholder.typicode.com/users/1';
 
 http.get(url, (res) => {
   let data = '';
-  // res is instance of EventEmitter
+  // res is an instance of EventEmitter
   res.on('data', (chunk) => {
     data += chunk;
   });
