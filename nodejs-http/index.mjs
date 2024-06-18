@@ -12,6 +12,12 @@ const server = http.createServer((req, res) => {
     res.write('<h1>Hello World</h1>');
     return res.end('Hello World');
   }
+
+  if (req.url === '/json') {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    return res.end(JSON.stringify({ name: 'John', age: 30 }));
+  }
 });
 
 server.listen(PORT, () => {
