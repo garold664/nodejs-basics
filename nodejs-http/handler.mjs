@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import qs from 'node:querystring';
 
 const comments = [
   { id: 1, text: 'Comment 1', author: 'John' },
@@ -28,7 +29,23 @@ export function handleNotFound(req, res) {
 }
 
 export function postComment(req, res) {
-  if (req.headers['content-type'] === 'application/json') {
+  if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+    let body = '';
+    req.on('data', (chunk) => {
+      body += chunk.toString();
+    });
+    req.on('end', () => {
+      try {
+        const comment = qs.parse(body);
+        comments.push(comment);
+        res.statusCode = 200;
+        res.end('Comment added');
+      } catch (error) {
+        res.statusCode = 400;
+        res.end('Invalid form data');
+      }
+    });
+  } else if (req.headers['content-type'] === 'application/json') {
     let commentJSON = '';
 
     req.on('data', (chunk) => {
