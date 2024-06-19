@@ -37,9 +37,19 @@ export function postComment(req, res) {
     req.on('end', () => {
       try {
         const comment = qs.parse(body);
+        comment.id = +comment.id;
         comments.push(comment);
         res.statusCode = 200;
-        res.end('Comment added');
+        res.setHeader('Content-Type', 'text/html');
+        res.write('<h1>Comment added</h1>');
+        comments.forEach((comment) => {
+          res.write(
+            `<p><q>${comment.text}</q> by <b>${comment.author}</b></p>`
+          );
+        });
+
+        res.write('<a href="/">Go back to form</a >');
+        res.end();
       } catch (error) {
         res.statusCode = 400;
         res.end('Invalid form data');
