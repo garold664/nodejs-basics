@@ -1,8 +1,13 @@
 import http from 'node:http';
 
-import { getHTML, getJSON, handleNotFound } from './handler.mjs';
+import {
+  getHTML,
+  getComments,
+  handleNotFound,
+  postComment,
+} from './handler.mjs';
 
-// const { getHTML, getJSON, handleNotFound } = require('./handler.js');
+// const { getHTML, getComments, handleNotFound } = require('./handler.js');
 
 const PORT = 3000;
 
@@ -14,7 +19,11 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === 'GET' && req.url === '/json') {
-    return getJSON(req, res);
+    return getComments(req, res);
+  }
+
+  if (req.method === 'POST' && req.url === '/json') {
+    return postComment(req, res);
   }
 
   handleNotFound(req, res);
