@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+
 const comments = [
   { id: 1, text: 'Comment 1', author: 'John' },
   { id: 2, text: 'Comment 2', author: 'Marrie' },
@@ -47,6 +49,20 @@ export function postComment(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.end('Must be in the JSON format');
   }
+}
+
+export function getHome(req, res) {
+  fs.readFile('./files/comment-form.html', (err, data) => {
+    if (err) {
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'text/plain');
+      res.end('Internal Server Error while loading HTML file');
+    } else {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/html');
+      res.end(data);
+    }
+  });
 }
 
 // module.exports = {

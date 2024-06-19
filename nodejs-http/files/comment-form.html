@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add a comment</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      form {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      label {
+        display: block;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      button {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Add a comment</h1>
+
+    <form action="/json" method="post">
+      <label for="author">Comment Id</label>
+      <input type="text" name="id" id="id" />
+
+      <label for="author">Author</label>
+      <input type="text" name="author" id="author" />
+
+      <label for="text">Text</label>
+      <textarea type="text" name="text" id="text" cols="30" rows="10">
+      </textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
