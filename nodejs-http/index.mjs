@@ -1,28 +1,23 @@
 import http from 'node:http';
 
+import { getHTML, getJSON, handleNotFound } from './handler.mjs';
+
+// const { getHTML, getJSON, handleNotFound } = require('./handler.js');
+
 const PORT = 3000;
 
 const server = http.createServer((req, res) => {
   // console.log(req);
 
-  if (req.url === '/html') {
-    res.statusCode = 200;
-    // res.setHeader('Content-Type', 'text/plain');
-    res.setHeader('Content-Type', 'text/html');
-    res.write('<h1>Hello World</h1>');
-    res.write('<p style="color: red">Hello World</p>');
-    return res.end();
+  if (req.method === 'GET' && req.url === '/html') {
+    return getHTML(req, res);
   }
 
-  if (req.url === '/json') {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    return res.end(JSON.stringify({ name: 'John', age: 30 }));
+  if (req.method === 'GET' && req.url === '/json') {
+    return getJSON(req, res);
   }
 
-  res.statusCode = 404;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Page not found');
+  handleNotFound(req, res);
 });
 
 server.listen(PORT, () => {
