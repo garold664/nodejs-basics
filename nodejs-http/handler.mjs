@@ -10,13 +10,13 @@ export function getHTML(req, res) {
   res.setHeader('Content-Type', 'text/html');
   res.write('<h1>Hello World</h1>');
   res.write('<p style="color: red">Hello World</p>');
-  return res.end();
+  res.end();
 }
 
 export function getComments(req, res) {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
-  return res.end(JSON.stringify(comments));
+  res.end(JSON.stringify(comments));
 }
 
 export function handleNotFound(req, res) {
@@ -26,16 +26,27 @@ export function handleNotFound(req, res) {
 }
 
 export function postComment(req, res) {
-  let commentJSON = '';
+  if (req.headers['content-type'] === 'application/json') {
+    let commentJSON = '';
 
-  req.on('data', (chunk) => {
-    commentJSON += chunk;
-  });
-  req.on('end', () => {
-    comments.push(JSON.parse(commentJSON));
-    res.statusCode = 200;
-    res.end('Comment added');
-  });
+    req.on('data', (chunk) => {
+      commentJSON += chunk;
+    });
+    req.on('end', () => {
+      try {
+        comments.push(JSON.parse(commentJSON));
+        res.statusCode = 200;
+        res.end('Comment added');
+      } catch (error) {
+        res.statusCode = 400;
+        res.end('Invalid JSON format');
+      }
+    });
+  } else {
+    res.statusCode = 400;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Must be in the JSON format');
+  }
 }
 
 // module.exports = {
